@@ -1,0 +1,7 @@
+task_id,expected_label,predicted_label,correct
+gen-001,unknown_tool,unknown_tool,True
+gen-002,missing_argument,missing_argument,True
+gen-003,invalid_input,invalid_input,True
+gen-004,none,none,True
+gen-005,invalid_input,unknown_tool,False
+gen-006,unknown_tool,invalid_input,False
