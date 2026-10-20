@@ -1,4 +1,4 @@
-# 🕵️ Agent Autopsy
+# Agent Autopsy
 ### An ML-Powered Failure Diagnosis System for AI Agents
 
 **Agent Autopsy** is a research-oriented project that investigates how machine learning can diagnose failures in AI agents by analyzing their execution traces, tool calls, and error messages.
@@ -7,7 +7,7 @@ Instead of simply reporting that an agent failed, the system attempts to classif
 
 > **Project status:** Research prototype in active development.
 
-## 🎯 Problem Statement
+## Problem Statement
 
 AI agents can fail for several reasons, including unsupported tools, missing arguments, invalid inputs, and execution errors. Understanding these failures is essential for building more reliable AI systems.
 
