@@ -1,17 +1,41 @@
+"""Evaluate the trained classifier on held-out traces and report coverage.
+
+The suite deliberately contains two kinds of case:
+
+* **Scored** cases -- the failure mode has a class in the trained taxonomy
+  (see ``src/diagnosis/taxonomy.py``), so the classifier's prediction is
+  compared against a known ground truth.
+* **Out-of-taxonomy** cases -- the trace failed in a way the trained taxonomy
+  cannot express, for example a ``NameError`` raised inside generated code or
+  an HTTP 404 returned by a tool. There is no correct label for these, so
+  they are reported (with the label the model forced onto them) but excluded
+  from the accuracy figure. Counting them as model errors would report a
+  false failure rate.
+
+An earlier version of this file assigned every case an expected label by
+analogy to the nearest training class. That mislabelled the out-of-taxonomy
+cases and made the suite report model errors that were actually annotation
+errors.
+"""
 
 from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 
 from src.diagnosis.predict_failure import diagnose_trace
+from src.diagnosis.taxonomy import is_supported
 
 
 OUTPUT_FILE = Path("reports/generalization_results.csv")
-OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
 
 
-# These are new test cases, not copied from the training CSV.
-TEST_CASES = [
+# Held-out cases. These are not copied from the training CSV.
+#
+# ``expected_label`` is None when the trace's failure mode has no class in
+# the trained taxonomy. Those cases must carry an
+# ``out_of_taxonomy_reason`` explaining why no label applies.
+TEST_CASES: List[Dict[str, Any]] = [
     {
         "task_id": "gen-001",
         "agent_type": "calculator",
@@ -55,7 +79,12 @@ TEST_CASES = [
         "status": "failure",
         "error_type": "NameError",
         "error": "name 'total' is not defined",
-        "expected_label": "invalid_input",
+        "expected_label": None,
+        "out_of_taxonomy_reason": (
+            "NameError raised inside generated code is a runtime error. The "
+            "trained taxonomy covers tool selection, missing arguments and "
+            "argument types only, so no label applies."
+        ),
     },
     {
         "task_id": "gen-006",
@@ -64,36 +93,119 @@ TEST_CASES = [
         "status": "failure",
         "error_type": "HTTPError",
         "error": "The requested page could not be found",
-        "expected_label": "unknown_tool",
+        "expected_label": None,
+        "out_of_taxonomy_reason": (
+            "A 404 from fetch_page is a tool execution error, not an unknown "
+            "tool: fetch_page is a registered tool that returned an error. "
+            "The trained taxonomy has no class for upstream failures."
+        ),
     },
 ]
 
 
-def main():
-    results = []
+def build_result_row(
+    case: Dict[str, Any],
+    prediction: Dict[str, Any],
+) -> Dict[str, Any]:
+    """Turn one evaluated case into a result row.
 
-    for case in TEST_CASES:
-        prediction = diagnose_trace(case)
+    Args:
+        case: An entry of ``TEST_CASES``.
+        prediction: The output of ``diagnose_trace`` for that case.
 
-        expected = case["expected_label"]
-        predicted = prediction["predicted_label"]
+    Returns:
+        A row with ``scored`` set to ``False`` and ``correct`` left blank
+        when the case falls outside the trained taxonomy.
 
-        results.append({
-            "task_id": case["task_id"],
-            "expected_label": expected,
-            "predicted_label": predicted,
-            "correct": expected == predicted,
-        })
+    Raises:
+        ValueError: If a case declares an expected label that is not part of
+            the trained taxonomy.
+    """
+    expected: Optional[str] = case.get("expected_label")
+    scored = expected is not None
 
-    df = pd.DataFrame(results)
+    if scored and not is_supported(expected):
+        raise ValueError(
+            f"Case {case.get('task_id')!r} expects label {expected!r}, which "
+            "is not in the trained taxonomy. Use expected_label=None with an "
+            "out_of_taxonomy_reason for cases the taxonomy cannot express."
+        )
+
+    predicted = prediction["predicted_label"]
+
+    return {
+        "task_id": case.get("task_id", "unknown"),
+        "expected_label": expected or "",
+        "predicted_label": predicted,
+        "correct": (expected == predicted) if scored else "",
+        "scored": scored,
+        "out_of_taxonomy_reason": case.get("out_of_taxonomy_reason", ""),
+    }
+
+
+def summarize(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Summarize evaluation rows without hiding out-of-taxonomy cases.
+
+    The accuracy is computed over scored cases only. ``coverage`` reports how
+    much of the suite the trained taxonomy was able to express at all.
+    """
+    scored = [row for row in rows if row["scored"]]
+    unscored = [row for row in rows if not row["scored"]]
+    correct = sum(1 for row in scored if bool(row["correct"]))
+
+    return {
+        "total": len(rows),
+        "scored": len(scored),
+        "unscored": len(unscored),
+        "correct": correct,
+        "accuracy": (correct / len(scored)) if scored else None,
+        "coverage": (len(scored) / len(rows)) if rows else None,
+    }
+
+
+def main() -> Dict[str, Any]:
+    """Run the generalization suite and write the results CSV."""
+    rows = [
+        build_result_row(case, diagnose_trace(case))
+        for case in TEST_CASES
+    ]
+
+    df = pd.DataFrame(rows)
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(OUTPUT_FILE, index=False)
 
-    print("\nGeneralization test results:")
-    print(df.to_string(index=False))
+    summary = summarize(rows)
 
-    accuracy = df["correct"].mean()
-    print(f"\nAccuracy on these {len(df)} cases: {accuracy:.1%}")
+    scored_df = df[df["scored"]]
+    unscored_df = df[~df["scored"]]
+
+    print("\nGeneralization results (scored cases):")
+    print(scored_df[
+        ["task_id", "expected_label", "predicted_label", "correct"]
+    ].to_string(index=False))
+
+    if not unscored_df.empty:
+        print("\nOutside the trained taxonomy (reported, not scored):")
+        print(unscored_df[
+            ["task_id", "predicted_label", "out_of_taxonomy_reason"]
+        ].to_string(index=False))
+
+    accuracy = summary["accuracy"]
+    accuracy_text = "n/a" if accuracy is None else f"{accuracy:.1%}"
+    coverage = summary["coverage"]
+    coverage_text = "n/a" if coverage is None else f"{coverage:.1%}"
+
+    print(
+        f"\nAccuracy on scored cases: "
+        f"{summary['correct']}/{summary['scored']} = {accuracy_text}"
+    )
+    print(
+        f"Taxonomy coverage: {summary['scored']}/{summary['total']} "
+        f"cases have a label in the trained taxonomy ({coverage_text})"
+    )
     print(f"Results saved to: {OUTPUT_FILE}")
+
+    return summary
 
 
 if __name__ == "__main__":

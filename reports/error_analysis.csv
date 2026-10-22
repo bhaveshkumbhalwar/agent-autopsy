@@ -1,3 +1,1 @@
-task_id,expected_label,predicted_label,correct,error_analysis
-gen-005,invalid_input,unknown_tool,False,"Expected invalid_input, but predicted unknown_tool. Inspect the input features and label definition."
-gen-006,unknown_tool,invalid_input,False,"Expected unknown_tool, but predicted invalid_input. Inspect the input features and label definition."
+task_id,expected_label,predicted_label,correct,scored,out_of_taxonomy_reason,error_analysis

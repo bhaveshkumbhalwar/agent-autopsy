@@ -1,7 +1,7 @@
-task_id,expected_label,predicted_label,correct
-gen-001,unknown_tool,unknown_tool,True
-gen-002,missing_argument,missing_argument,True
-gen-003,invalid_input,invalid_input,True
-gen-004,none,none,True
-gen-005,invalid_input,unknown_tool,False
-gen-006,unknown_tool,invalid_input,False
+task_id,expected_label,predicted_label,correct,scored,out_of_taxonomy_reason
+gen-001,unknown_tool,unknown_tool,True,True,
+gen-002,missing_argument,missing_argument,True,True,
+gen-003,invalid_input,invalid_input,True,True,
+gen-004,none,none,True,True,
+gen-005,,unknown_tool,,False,"NameError raised inside generated code is a runtime error. The trained taxonomy covers tool selection, missing arguments and argument types only, so no label applies."
+gen-006,,invalid_input,,False,"A 404 from fetch_page is a tool execution error, not an unknown tool: fetch_page is a registered tool that returned an error. The trained taxonomy has no class for upstream failures."

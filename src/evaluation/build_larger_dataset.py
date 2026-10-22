@@ -5,6 +5,7 @@ from pathlib import Path
 import pandas as pd
 
 from src.agents.basic_agent import run_agent
+from src.diagnosis.taxonomy import SUPPORTED_LABELS
 
 
 OUTPUT_FILE = Path("data/processed/failure_dataset.csv")
@@ -77,6 +78,19 @@ def generate_cases():
         task_number += 1
 
     random.shuffle(cases)
+
+    # The generated labels must stay inside the trained taxonomy, otherwise
+    # the classifier would be trained on a class it cannot be evaluated on.
+    unsupported = {
+        case["failure_label"] for case in cases
+    } - set(SUPPORTED_LABELS)
+    if unsupported:
+        raise ValueError(
+            f"Generated labels outside the trained taxonomy: "
+            f"{sorted(unsupported)}. "
+            f"Supported labels: {', '.join(SUPPORTED_LABELS)}"
+        )
+
     return cases
 
 
