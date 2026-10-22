@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Agent Autopsy
 ### An ML-Powered Failure Diagnosis System for AI Agents
 
