@@ -3,7 +3,7 @@
 The suite deliberately contains two kinds of case:
 
 * **Scored** cases -- the failure mode has a class in the trained taxonomy
-  (see ``src/diagnosis/taxonomy.py``), so the classifier's prediction is
+  (see ``src/tracing/labels.py``), so the classifier's prediction is
   compared against a known ground truth.
 * **Out-of-taxonomy** cases -- the trace failed in a way the trained taxonomy
   cannot express, for example a ``NameError`` raised inside generated code or
@@ -15,7 +15,20 @@ The suite deliberately contains two kinds of case:
 An earlier version of this file assigned every case an expected label by
 analogy to the nearest training class. That mislabelled the out-of-taxonomy
 cases and made the suite report model errors that were actually annotation
-errors.
+errors. The rules that replaced it are documented in
+:mod:`src.evaluation.labelling_rules` and applied by
+:mod:`src.evaluation.audit_generalization_labels`:
+
+* the label describes the **immediate** cause, not the underlying one;
+* a call that was never validated (missing tool, absent argument, unusable
+  argument) has a label;
+* a call that was valid and then failed while running (a ``NameError`` in
+  generated code, an HTTP 404 from a real tool) has **no** label, even
+  though the underlying cause is real.
+
+Each case therefore records ``failure_stage`` and ``detail_kind``, and the
+audit derives the label from them. A case cannot quietly carry a label
+that contradicts the rules.
 """
 
 from pathlib import Path
@@ -24,7 +37,7 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 
 from src.diagnosis.predict_failure import diagnose_trace
-from src.diagnosis.taxonomy import is_supported
+from src.tracing.labels import is_supported
 
 
 OUTPUT_FILE = Path("reports/generalization_results.csv")
@@ -35,6 +48,10 @@ OUTPUT_FILE = Path("reports/generalization_results.csv")
 # ``expected_label`` is None when the trace's failure mode has no class in
 # the trained taxonomy. Those cases must carry an
 # ``out_of_taxonomy_reason`` explaining why no label applies.
+#
+# ``failure_stage`` and ``detail_kind`` describe where the call failed and
+# are the only inputs the label is derived from. See
+# ``src/evaluation/labelling_rules.py``.
 TEST_CASES: List[Dict[str, Any]] = [
     {
         "task_id": "gen-001",
@@ -43,6 +60,8 @@ TEST_CASES: List[Dict[str, Any]] = [
         "status": "failure",
         "error_type": "ValueError",
         "error": "Unknown tool: power",
+        "failure_stage": "call_validation",
+        "detail_kind": "tool_not_registered",
         "expected_label": "unknown_tool",
     },
     {
@@ -52,6 +71,8 @@ TEST_CASES: List[Dict[str, Any]] = [
         "status": "failure",
         "error_type": "KeyError",
         "error": "'b'",
+        "failure_stage": "call_validation",
+        "detail_kind": "argument_absent",
         "expected_label": "missing_argument",
     },
     {
@@ -61,6 +82,8 @@ TEST_CASES: List[Dict[str, Any]] = [
         "status": "failure",
         "error_type": "ValueError",
         "error": "Arguments a and b must be numbers",
+        "failure_stage": "call_validation",
+        "detail_kind": "argument_unusable",
         "expected_label": "invalid_input",
     },
     {
@@ -70,6 +93,8 @@ TEST_CASES: List[Dict[str, Any]] = [
         "status": "success",
         "error_type": "",
         "error": "",
+        "failure_stage": "success",
+        "detail_kind": "success",
         "expected_label": "none",
     },
     {
@@ -79,6 +104,8 @@ TEST_CASES: List[Dict[str, Any]] = [
         "status": "failure",
         "error_type": "NameError",
         "error": "name 'total' is not defined",
+        "failure_stage": "tool_execution",
+        "detail_kind": "execution_error",
         "expected_label": None,
         "out_of_taxonomy_reason": (
             "NameError raised inside generated code is a runtime error. The "
@@ -93,6 +120,8 @@ TEST_CASES: List[Dict[str, Any]] = [
         "status": "failure",
         "error_type": "HTTPError",
         "error": "The requested page could not be found",
+        "failure_stage": "tool_execution",
+        "detail_kind": "execution_error",
         "expected_label": None,
         "out_of_taxonomy_reason": (
             "A 404 from fetch_page is a tool execution error, not an unknown "

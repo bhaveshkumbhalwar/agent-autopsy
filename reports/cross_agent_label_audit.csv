@@ -1,0 +1,49 @@
+task_id,error_type,failure_stage,detail_kind,exception_type_would_say,rules_say,declared_label,rules_agree_with_declared,exception_type_agrees_with_rules,note
+calc-001,,success,success,none,none,none,True,True,
+calc-002,,success,success,none,none,none,True,True,
+calc-003,ValueError,call_validation,tool_not_registered,invalid_input,unknown_tool,unknown_tool,True,False,
+calc-004,ValueError,call_validation,tool_not_registered,invalid_input,unknown_tool,unknown_tool,True,False,
+calc-005,KeyError,call_validation,argument_absent,missing_argument,missing_argument,missing_argument,True,True,
+calc-006,TypeError,call_validation,argument_absent,invalid_input,missing_argument,missing_argument,True,False,
+calc-007,ValueError,call_validation,argument_unusable,invalid_input,invalid_input,invalid_input,True,True,
+calc-008,TypeError,call_validation,argument_unusable,invalid_input,invalid_input,invalid_input,True,True,
+calc-009,OverflowError,tool_execution,execution_error,invalid_input,,,True,False,"The values were accepted and the computation overflowed, so this is not invalid_input."
+calc-010,RecursionError,tool_execution,execution_error,,,,True,True,
+calc-011,MemoryError,tool_execution,execution_error,,,,True,True,
+calc-012,,success,success,none,none,none,True,True,
+py-001,,success,success,none,none,none,True,True,
+py-002,,success,success,none,none,none,True,True,
+py-003,ValueError,call_validation,tool_not_registered,invalid_input,unknown_tool,unknown_tool,True,False,
+py-004,ValueError,call_validation,tool_not_registered,invalid_input,unknown_tool,unknown_tool,True,False,
+py-005,TypeError,call_validation,argument_absent,invalid_input,missing_argument,missing_argument,True,False,
+py-006,KeyError,call_validation,argument_absent,missing_argument,missing_argument,missing_argument,True,True,
+py-007,TypeError,call_validation,argument_unusable,invalid_input,invalid_input,invalid_input,True,True,
+py-008,ValueError,call_validation,argument_unusable,invalid_input,invalid_input,invalid_input,True,True,
+py-009,NameError,tool_execution,execution_error,invalid_input,,,True,False,"A NameError is raised by the code the tool ran. The call's arguments were present and usable, so this is not invalid_input."
+py-010,TypeError,tool_execution,execution_error,invalid_input,,,True,False,"The TypeError came from inside the executed code, not from the call's arguments, so this is not invalid_input."
+py-011,IndexError,tool_execution,execution_error,,,,True,True,
+py-012,TimeoutError,tool_execution,execution_error,unknown_tool,,,True,False,The tool exists and was called correctly; the service was slow. This is not unknown_tool.
+web-001,,success,success,none,none,none,True,True,
+web-002,,success,success,none,none,none,True,True,
+web-003,ValueError,call_validation,tool_not_registered,invalid_input,unknown_tool,unknown_tool,True,False,
+web-004,ValueError,call_validation,tool_not_registered,invalid_input,unknown_tool,unknown_tool,True,False,
+web-005,KeyError,call_validation,argument_absent,missing_argument,missing_argument,missing_argument,True,True,
+web-006,TypeError,call_validation,argument_absent,invalid_input,missing_argument,missing_argument,True,False,
+web-007,TypeError,call_validation,argument_unusable,invalid_input,invalid_input,invalid_input,True,True,
+web-008,ValueError,call_validation,argument_unusable,invalid_input,invalid_input,invalid_input,True,True,
+web-009,HTTPError,tool_execution,execution_error,unknown_tool,,,True,False,"An HTTP error is returned by a service the tool contacted. The tool exists and was called correctly, so this is not unknown_tool."
+web-010,HTTPError,tool_execution,execution_error,unknown_tool,,,True,False,"An HTTP error is returned by a service the tool contacted. The tool exists and was called correctly, so this is not unknown_tool."
+web-011,ConnectionError,tool_execution,execution_error,,,,True,True,
+web-012,SSLError,tool_execution,execution_error,,,,True,True,
+file-001,,success,success,none,none,none,True,True,
+file-002,,success,success,none,none,none,True,True,
+file-003,ValueError,call_validation,tool_not_registered,invalid_input,unknown_tool,unknown_tool,True,False,
+file-004,ValueError,call_validation,tool_not_registered,invalid_input,unknown_tool,unknown_tool,True,False,
+file-005,KeyError,call_validation,argument_absent,missing_argument,missing_argument,missing_argument,True,True,
+file-006,TypeError,call_validation,argument_absent,invalid_input,missing_argument,missing_argument,True,False,
+file-007,TypeError,call_validation,argument_unusable,invalid_input,invalid_input,invalid_input,True,True,
+file-008,ValueError,call_validation,argument_unusable,invalid_input,invalid_input,invalid_input,True,True,
+file-009,FileNotFoundError,tool_execution,execution_error,missing_argument,,,True,False,"The path was supplied and well typed; the file simply does not exist. The call was valid, so this is not missing_argument."
+file-010,PermissionError,tool_execution,execution_error,invalid_input,,,True,False,The arguments were usable; the process lacked permission. This is not invalid_input.
+file-011,OSError,tool_execution,execution_error,,,,True,True,
+file-012,NotADirectoryError,tool_execution,execution_error,,,,True,True,

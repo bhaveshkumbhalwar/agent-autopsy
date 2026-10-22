@@ -1,0 +1,2321 @@
+{
+  "generated_at": "2026-10-22T15:18:41.121453+00:00",
+  "seed": 42,
+  "dataset": {
+    "path": "data/processed/ml_dataset.csv",
+    "n_rows": 200,
+    "label_distribution": {
+      "none": 50,
+      "unknown_tool": 50,
+      "invalid_input": 50,
+      "missing_argument": 50
+    }
+  },
+  "feature_configuration": {
+    "input": "a sequence of execution traces (mappings)",
+    "text_columns": [
+      "agent_type",
+      "tool_name",
+      "status",
+      "error_type",
+      "error"
+    ],
+    "identifier_columns_excluded": [
+      "task_id",
+      "duration_ms",
+      "started_at",
+      "finished_at"
+    ],
+    "structured_feature_names": [
+      "has_error",
+      "has_arguments",
+      "has_missing_argument_error",
+      "has_unknown_tool_error",
+      "has_invalid_input_error"
+    ],
+    "text_block": {
+      "type": "TfidfVectorizer",
+      "params": {}
+    },
+    "structured_block": {
+      "type": "StandardScaler",
+      "applied": "to the structured features only"
+    },
+    "classifier": {
+      "type": "LogisticRegression",
+      "params": {
+        "max_iter": 1000
+      }
+    },
+    "random_state": 42
+  },
+  "leakage_audit": {
+    "n_rows": 200,
+    "label_distribution": {
+      "none": 50,
+      "unknown_tool": 50,
+      "invalid_input": 50,
+      "missing_argument": 50
+    },
+    "distinct_model_inputs": 16,
+    "duplicate_rows": 184,
+    "largest_group_size": 28,
+    "distinct_template_families": 4,
+    "template_families": {
+      "calculator|failure|KeyError|'b'": 50,
+      "calculator|failure|ValueError|Arguments a and b must be numbers": 50,
+      "calculator|failure|ValueError|Unknown tool: <tool>": 50,
+      "calculator|success||": 50
+    },
+    "ambiguous_model_inputs": 0,
+    "ambiguous_examples": [],
+    "identifier_shortcuts": {
+      "task_id": {
+        "column": "task_id",
+        "held_out_accuracy": 0.24,
+        "n_test": 50,
+        "ordinal_neighbour_probe": {
+          "column": "task_id",
+          "neighbour_accuracy": 0.9849246231155779,
+          "label_transitions": 3
+        }
+      },
+      "duration_ms": {
+        "column": "duration_ms",
+        "held_out_accuracy": 0.2,
+        "n_test": 50,
+        "ordinal_neighbour_probe": {
+          "column": "duration_ms",
+          "neighbour_accuracy": 0.24120603015075376,
+          "label_transitions": 151
+        }
+      }
+    },
+    "text_columns": [
+      "agent_type",
+      "tool_name",
+      "status",
+      "error_type",
+      "error"
+    ],
+    "identifier_columns": [
+      "task_id",
+      "duration_ms",
+      "started_at",
+      "finished_at"
+    ],
+    "split_overlap": {
+      "stratified_random": {
+        "train_rows": 150,
+        "test_rows": 50,
+        "distinct_train_signatures": 16,
+        "distinct_test_signatures": 14,
+        "signatures_in_both_splits": 14,
+        "test_rows_copied_from_train": 50,
+        "test_rows_copied_fraction": 1.0
+      },
+      "stratified_group_kfold": {
+        "train_rows": 95,
+        "test_rows": 105,
+        "distinct_train_signatures": 8,
+        "distinct_test_signatures": 8,
+        "signatures_in_both_splits": 0,
+        "test_rows_copied_from_train": 0,
+        "test_rows_copied_fraction": 0.0
+      }
+    }
+  },
+  "results": {
+    "stratified_random_split": {
+      "split_method": "stratified_random",
+      "seed": 42,
+      "n_train": 150,
+      "n_test": 50,
+      "train_label_distribution": {
+        "invalid_input": 37,
+        "missing_argument": 38,
+        "none": 37,
+        "unknown_tool": 38
+      },
+      "test_label_distribution": {
+        "invalid_input": 13,
+        "missing_argument": 12,
+        "none": 13,
+        "unknown_tool": 12
+      },
+      "metrics": {
+        "accuracy": 1.0,
+        "n_samples": 50,
+        "labels": [
+          "invalid_input",
+          "missing_argument",
+          "none",
+          "unknown_tool"
+        ],
+        "per_class": {
+          "invalid_input": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1_score": 1.0,
+            "support": 13
+          },
+          "missing_argument": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1_score": 1.0,
+            "support": 12
+          },
+          "none": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1_score": 1.0,
+            "support": 13
+          },
+          "unknown_tool": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1_score": 1.0,
+            "support": 12
+          }
+        },
+        "macro_avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "support": 50
+        },
+        "weighted_avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "support": 50
+        },
+        "confusion_matrix": {
+          "labels": [
+            "invalid_input",
+            "missing_argument",
+            "none",
+            "unknown_tool"
+          ],
+          "matrix": [
+            [
+              13,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              12,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              13,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              12
+            ]
+          ]
+        }
+      },
+      "predictions": [
+        {
+          "task_id": "d7-172",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-088",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-126",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-015",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-062",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-070",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-127",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-013",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-003",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-155",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-038",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-110",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-123",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-173",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-036",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-137",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-100",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-168",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-191",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-096",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-143",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-197",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-128",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-193",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-029",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-011",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-147",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-095",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-042",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-074",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-132",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-139",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-078",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-084",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-032",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-051",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-178",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-012",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-049",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-181",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-156",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-112",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-153",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-200",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-067",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-187",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-131",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-072",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-050",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-007",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        }
+      ],
+      "model": "text-only pipeline fitted on the split's training rows only"
+    },
+    "group_cross_validation": {
+      "split_method": "stratified_group_kfold(n_splits=2) with pooled out-of-fold predictions",
+      "seed": 42,
+      "n_splits": 2,
+      "n_scored": 200,
+      "label_distribution": {
+        "invalid_input": 50,
+        "missing_argument": 50,
+        "none": 50,
+        "unknown_tool": 50
+      },
+      "folds": [
+        {
+          "fold": 0,
+          "n_train": 95,
+          "n_test": 105,
+          "test_label_distribution": {
+            "invalid_input": 28,
+            "missing_argument": 27,
+            "none": 25,
+            "unknown_tool": 25
+          },
+          "test_accuracy": 1.0
+        },
+        {
+          "fold": 1,
+          "n_train": 105,
+          "n_test": 95,
+          "test_label_distribution": {
+            "invalid_input": 22,
+            "missing_argument": 23,
+            "none": 25,
+            "unknown_tool": 25
+          },
+          "test_accuracy": 1.0
+        }
+      ],
+      "metrics": {
+        "accuracy": 1.0,
+        "n_samples": 200,
+        "labels": [
+          "invalid_input",
+          "missing_argument",
+          "none",
+          "unknown_tool"
+        ],
+        "per_class": {
+          "invalid_input": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1_score": 1.0,
+            "support": 50
+          },
+          "missing_argument": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1_score": 1.0,
+            "support": 50
+          },
+          "none": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1_score": 1.0,
+            "support": 50
+          },
+          "unknown_tool": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1_score": 1.0,
+            "support": 50
+          }
+        },
+        "macro_avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "support": 200
+        },
+        "weighted_avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1_score": 1.0,
+          "support": 200
+        },
+        "confusion_matrix": {
+          "labels": [
+            "invalid_input",
+            "missing_argument",
+            "none",
+            "unknown_tool"
+          ],
+          "matrix": [
+            [
+              50,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              50,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              50,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              50
+            ]
+          ]
+        }
+      },
+      "predictions": [
+        {
+          "task_id": "d7-024",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-009",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-002",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-035",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-092",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-199",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-161",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-172",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-125",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-196",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-088",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-083",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-126",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-093",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-144",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-063",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-015",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-151",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-020",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-152",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-062",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-070",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-127",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-073",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-013",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-176",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-124",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-107",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-003",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-155",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-038",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-021",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-110",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-039",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-184",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-123",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-005",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-162",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-044",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-173",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-133",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-069",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-034",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-106",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-141",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-171",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-017",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-180",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-160",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-048",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-135",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-065",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-036",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-086",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-116",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-137",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-047",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-053",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-100",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-122",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-192",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-158",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-183",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-041",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-071",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-159",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-168",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-016",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-166",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-191",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-120",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-179",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-023",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-096",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-055",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-014",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-143",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-150",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-091",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-197",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-064",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-136",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-025",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-128",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-146",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-054",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-193",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-170",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-194",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-114",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-145",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-006",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-004",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-019",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-026",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-029",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-040",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-117",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-031",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-097",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-163",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-043",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-142",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-082",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-109",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-115",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-037",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-011",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-147",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-022",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-095",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-113",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-102",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-061",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-157",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-190",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-087",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-119",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-198",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-060",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-042",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-140",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-129",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-075",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-101",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-056",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-027",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-074",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-132",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-154",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-139",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-078",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-045",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-098",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-108",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-189",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-033",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-076",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-104",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-084",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-105",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-080",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-130",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-077",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-032",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-182",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-177",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-185",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-111",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-094",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-051",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-178",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-134",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-001",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-164",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-012",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-066",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-049",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-148",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-099",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-175",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-181",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-156",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-167",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-081",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-089",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-112",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-153",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-028",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-200",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-068",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-149",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-046",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-067",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-030",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-008",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-187",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-138",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-174",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-188",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-131",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-165",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-195",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-186",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-018",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-072",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-085",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-103",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-050",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-169",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true
+        },
+        {
+          "task_id": "d7-007",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        },
+        {
+          "task_id": "d7-058",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-059",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-079",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-090",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-118",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-052",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-057",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true
+        },
+        {
+          "task_id": "d7-121",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true
+        },
+        {
+          "task_id": "d7-010",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true
+        }
+      ],
+      "model": "one text-only pipeline per fold, fitted on that fold's training rows only"
+    },
+    "independent_evaluation_set": {
+      "model": "text-only pipeline fitted on all 200 rows of data/processed/ml_dataset.csv; the independent set is disjoint from it and was never used for fitting",
+      "dataset": "data/evaluation/in_domain_eval.csv",
+      "n_cases": 48,
+      "provenance": "hand-authored simulation; not captured agent behaviour",
+      "model_inputs_shared_with_training": 5,
+      "label_distribution": {
+        "none": 12,
+        "unknown_tool": 12,
+        "missing_argument": 12,
+        "invalid_input": 12
+      },
+      "case_kind_distribution": {
+        "paraphrased_message": 17,
+        "unseen_tool": 15,
+        "unseen_error_type": 10,
+        "seen_template": 6
+      },
+      "metrics": {
+        "accuracy": 0.8125,
+        "n_samples": 48,
+        "labels": [
+          "invalid_input",
+          "missing_argument",
+          "none",
+          "unknown_tool"
+        ],
+        "per_class": {
+          "invalid_input": {
+            "precision": 1.0,
+            "recall": 0.5833333333333334,
+            "f1_score": 0.7368421052631579,
+            "support": 12
+          },
+          "missing_argument": {
+            "precision": 0.8333333333333334,
+            "recall": 0.8333333333333334,
+            "f1_score": 0.8333333333333334,
+            "support": 12
+          },
+          "none": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1_score": 1.0,
+            "support": 12
+          },
+          "unknown_tool": {
+            "precision": 0.5882352941176471,
+            "recall": 0.8333333333333334,
+            "f1_score": 0.6896551724137931,
+            "support": 12
+          }
+        },
+        "macro_avg": {
+          "precision": 0.8553921568627452,
+          "recall": 0.8125000000000001,
+          "f1_score": 0.8149576527525711,
+          "support": 48
+        },
+        "weighted_avg": {
+          "precision": 0.8553921568627452,
+          "recall": 0.8125,
+          "f1_score": 0.8149576527525711,
+          "support": 48
+        },
+        "confusion_matrix": {
+          "labels": [
+            "invalid_input",
+            "missing_argument",
+            "none",
+            "unknown_tool"
+          ],
+          "matrix": [
+            [
+              7,
+              0,
+              0,
+              5
+            ],
+            [
+              0,
+              10,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              12,
+              0
+            ],
+            [
+              0,
+              2,
+              0,
+              10
+            ]
+          ]
+        }
+      },
+      "by_case_kind": [
+        {
+          "case_kind": "paraphrased_message",
+          "n_cases": 17,
+          "correct": 9,
+          "accuracy": 0.5294117647058824
+        },
+        {
+          "case_kind": "seen_template",
+          "n_cases": 6,
+          "correct": 6,
+          "accuracy": 1.0
+        },
+        {
+          "case_kind": "unseen_error_type",
+          "n_cases": 10,
+          "correct": 10,
+          "accuracy": 1.0
+        },
+        {
+          "case_kind": "unseen_tool",
+          "n_cases": 15,
+          "correct": 14,
+          "accuracy": 0.9333333333333333
+        }
+      ],
+      "predictions": [
+        {
+          "task_id": "eval-001",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true,
+          "case_kind": "seen_template"
+        },
+        {
+          "task_id": "eval-002",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true,
+          "case_kind": "seen_template"
+        },
+        {
+          "task_id": "eval-003",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true,
+          "case_kind": "unseen_tool"
+        },
+        {
+          "task_id": "eval-004",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true,
+          "case_kind": "unseen_tool"
+        },
+        {
+          "task_id": "eval-005",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true,
+          "case_kind": "unseen_tool"
+        },
+        {
+          "task_id": "eval-006",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true,
+          "case_kind": "unseen_tool"
+        },
+        {
+          "task_id": "eval-007",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true,
+          "case_kind": "unseen_tool"
+        },
+        {
+          "task_id": "eval-008",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true,
+          "case_kind": "unseen_tool"
+        },
+        {
+          "task_id": "eval-009",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true,
+          "case_kind": "unseen_tool"
+        },
+        {
+          "task_id": "eval-010",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true,
+          "case_kind": "unseen_tool"
+        },
+        {
+          "task_id": "eval-011",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true,
+          "case_kind": "unseen_tool"
+        },
+        {
+          "task_id": "eval-012",
+          "expected_label": "none",
+          "predicted_label": "none",
+          "correct": true,
+          "case_kind": "unseen_tool"
+        },
+        {
+          "task_id": "eval-013",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true,
+          "case_kind": "unseen_tool"
+        },
+        {
+          "task_id": "eval-014",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true,
+          "case_kind": "unseen_tool"
+        },
+        {
+          "task_id": "eval-015",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true,
+          "case_kind": "unseen_tool"
+        },
+        {
+          "task_id": "eval-016",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-017",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-018",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-019",
+          "expected_label": "unknown_tool",
+          "predicted_label": "missing_argument",
+          "correct": false,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-020",
+          "expected_label": "unknown_tool",
+          "predicted_label": "missing_argument",
+          "correct": false,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-021",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-022",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-023",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true,
+          "case_kind": "unseen_error_type"
+        },
+        {
+          "task_id": "eval-024",
+          "expected_label": "unknown_tool",
+          "predicted_label": "unknown_tool",
+          "correct": true,
+          "case_kind": "unseen_error_type"
+        },
+        {
+          "task_id": "eval-025",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true,
+          "case_kind": "seen_template"
+        },
+        {
+          "task_id": "eval-026",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true,
+          "case_kind": "seen_template"
+        },
+        {
+          "task_id": "eval-027",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-028",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-029",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-030",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-031",
+          "expected_label": "missing_argument",
+          "predicted_label": "unknown_tool",
+          "correct": false,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-032",
+          "expected_label": "missing_argument",
+          "predicted_label": "unknown_tool",
+          "correct": false,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-033",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true,
+          "case_kind": "unseen_error_type"
+        },
+        {
+          "task_id": "eval-034",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true,
+          "case_kind": "unseen_error_type"
+        },
+        {
+          "task_id": "eval-035",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true,
+          "case_kind": "unseen_error_type"
+        },
+        {
+          "task_id": "eval-036",
+          "expected_label": "missing_argument",
+          "predicted_label": "missing_argument",
+          "correct": true,
+          "case_kind": "unseen_tool"
+        },
+        {
+          "task_id": "eval-037",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true,
+          "case_kind": "seen_template"
+        },
+        {
+          "task_id": "eval-038",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true,
+          "case_kind": "seen_template"
+        },
+        {
+          "task_id": "eval-039",
+          "expected_label": "invalid_input",
+          "predicted_label": "unknown_tool",
+          "correct": false,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-040",
+          "expected_label": "invalid_input",
+          "predicted_label": "unknown_tool",
+          "correct": false,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-041",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true,
+          "case_kind": "unseen_error_type"
+        },
+        {
+          "task_id": "eval-042",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true,
+          "case_kind": "unseen_error_type"
+        },
+        {
+          "task_id": "eval-043",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true,
+          "case_kind": "unseen_error_type"
+        },
+        {
+          "task_id": "eval-044",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true,
+          "case_kind": "unseen_error_type"
+        },
+        {
+          "task_id": "eval-045",
+          "expected_label": "invalid_input",
+          "predicted_label": "unknown_tool",
+          "correct": false,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-046",
+          "expected_label": "invalid_input",
+          "predicted_label": "unknown_tool",
+          "correct": false,
+          "case_kind": "paraphrased_message"
+        },
+        {
+          "task_id": "eval-047",
+          "expected_label": "invalid_input",
+          "predicted_label": "invalid_input",
+          "correct": true,
+          "case_kind": "unseen_error_type"
+        },
+        {
+          "task_id": "eval-048",
+          "expected_label": "invalid_input",
+          "predicted_label": "unknown_tool",
+          "correct": false,
+          "case_kind": "unseen_tool"
+        }
+      ]
+    }
+  }
+}

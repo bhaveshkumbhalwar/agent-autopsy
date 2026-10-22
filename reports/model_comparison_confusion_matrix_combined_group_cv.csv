@@ -1,0 +1,5 @@
+actual\predicted,invalid_input,missing_argument,none,unknown_tool
+invalid_input,50,0,0,0
+missing_argument,0,50,0,0
+none,0,0,50,0
+unknown_tool,0,0,0,50

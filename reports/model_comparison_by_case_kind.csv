@@ -1,0 +1,9 @@
+model,case_kind,n_cases,correct,accuracy
+text,paraphrased_message,17,9,0.5294117647058824
+text,seen_template,6,6,1.0
+text,unseen_error_type,10,10,1.0
+text,unseen_tool,15,14,0.9333333333333333
+combined,paraphrased_message,17,11,0.6470588235294118
+combined,seen_template,6,6,1.0
+combined,unseen_error_type,10,10,1.0
+combined,unseen_tool,15,14,0.9333333333333333

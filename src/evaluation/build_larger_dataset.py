@@ -1,11 +1,12 @@
 
+import json
 import random
 from pathlib import Path
 
 import pandas as pd
 
 from src.agents.basic_agent import run_agent
-from src.diagnosis.taxonomy import SUPPORTED_LABELS
+from src.tracing.labels import SUPPORTED_LABELS
 
 
 OUTPUT_FILE = Path("data/processed/failure_dataset.csv")
@@ -95,32 +96,46 @@ def generate_cases():
 
 
 def build_dataset():
+    """Execute every generated case and write the labelled dataset.
+
+    Raises:
+        ValueError: If the label recorded by the trace disagrees with the
+            label the case expects, or is outside the trained taxonomy.
+    """
     rows = []
 
     for case in generate_cases():
         trace = run_agent(case)
 
-        # A label should match the actual outcome.
-        expected_failure = case["failure_label"] != "none"
-        actual_failure = trace.status == "failure"
+        # The trace decides the label; the case states what was expected.
+        # Disagreement means the agent or the generator is wrong.
+        label = trace.failure_label
+        expected = case["failure_label"]
 
-        if expected_failure != actual_failure:
+        if label not in SUPPORTED_LABELS:
             raise ValueError(
-                f"Label mismatch for {case['task_id']}: "
-                f"expected failure={expected_failure}, "
-                f"actual status={trace.status}"
+                f"Trace for {case['task_id']} carries a label outside the "
+                f"trained taxonomy: {label!r}. "
+                f"Supported labels: {', '.join(SUPPORTED_LABELS)}"
+            )
+
+        if label != expected:
+            raise ValueError(
+                f"Label mismatch for {case['task_id']}: the trace was labelled "
+                f"{label!r} but the case expects {expected!r} "
+                f"(status={trace.status})."
             )
 
         rows.append({
             "task_id": case["task_id"],
             "agent_type": trace.agent_type,
             "tool_name": trace.tool_name,
-            "arguments": str(trace.arguments),
+            "arguments": json.dumps(trace.arguments, sort_keys=True),
             "status": trace.status,
             "error_type": trace.error_type,
             "error": trace.error,
             "duration_ms": trace.duration_ms,
-            "failure_label": case["failure_label"],
+            "failure_label": label,
         })
 
     df = pd.DataFrame(rows)

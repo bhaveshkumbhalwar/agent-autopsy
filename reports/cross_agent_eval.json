@@ -1,0 +1,446 @@
+{
+  "generated_at": "2026-10-22T15:25:30.032240+00:00",
+  "dataset": {
+    "path": "data/evaluation/cross_agent_eval.csv",
+    "provenance": "hand_authored_simulation",
+    "is_captured_agent_behaviour": false,
+    "n_cases": 48,
+    "scored": 33,
+    "unscored": 15,
+    "by_domain": {
+      "calculator": 12,
+      "file_operations": 12,
+      "python_execution": 12,
+      "web": 12
+    },
+    "by_domain_scored": {
+      "calculator": 9,
+      "file_operations": 8,
+      "python_execution": 8,
+      "web": 8
+    },
+    "by_label": {
+      "invalid_input": 8,
+      "missing_argument": 8,
+      "none": 9,
+      "out_of_taxonomy": 15,
+      "unknown_tool": 8
+    },
+    "by_case_kind": {
+      "in_domain_transfer": 6,
+      "new_agent": 15,
+      "out_of_taxonomy": 15,
+      "paraphrased_message": 12
+    }
+  },
+  "model": {
+    "name": "text",
+    "file": "models/failure_classifier.joblib",
+    "retrained_for_this_evaluation": false
+  },
+  "training_dataset": {
+    "path": "data/processed/ml_dataset.csv",
+    "n_rows": 200
+  },
+  "metrics": {
+    "accuracy": 0.7575757575757576,
+    "n_samples": 33,
+    "labels": [
+      "none",
+      "unknown_tool",
+      "missing_argument",
+      "invalid_input"
+    ],
+    "per_class": {
+      "none": {
+        "precision": 1.0,
+        "recall": 0.8888888888888888,
+        "f1_score": 0.9411764705882353,
+        "support": 9
+      },
+      "unknown_tool": {
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1_score": 0.6666666666666666,
+        "support": 8
+      },
+      "missing_argument": {
+        "precision": 1.0,
+        "recall": 0.625,
+        "f1_score": 0.7692307692307693,
+        "support": 8
+      },
+      "invalid_input": {
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1_score": 0.6666666666666666,
+        "support": 8
+      }
+    },
+    "macro_avg": {
+      "precision": 0.875,
+      "recall": 0.7534722222222222,
+      "f1_score": 0.7609351432880844,
+      "support": 33
+    },
+    "weighted_avg": {
+      "precision": 0.8787878787878788,
+      "recall": 0.7575757575757576,
+      "f1_score": 0.7663970016911194,
+      "support": 33
+    },
+    "confusion_matrix": {
+      "labels": [
+        "none",
+        "unknown_tool",
+        "missing_argument",
+        "invalid_input"
+      ],
+      "matrix": [
+        [
+          8,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          8,
+          0,
+          0
+        ],
+        [
+          0,
+          3,
+          5,
+          0
+        ],
+        [
+          0,
+          4,
+          0,
+          4
+        ]
+      ]
+    }
+  },
+  "uncertainty": {
+    "accuracy": 0.7575757575757576,
+    "ci_low": 0.6060606060606061,
+    "ci_high": 0.8787878787878788,
+    "confidence": 0.95,
+    "n_resamples": 2000,
+    "n_cases": 33
+  },
+  "by_domain": [
+    {
+      "domain": "calculator",
+      "n_cases": 9,
+      "correct": 8,
+      "accuracy": 0.8889
+    },
+    {
+      "domain": "file_operations",
+      "n_cases": 8,
+      "correct": 6,
+      "accuracy": 0.75
+    },
+    {
+      "domain": "python_execution",
+      "n_cases": 8,
+      "correct": 6,
+      "accuracy": 0.75
+    },
+    {
+      "domain": "web",
+      "n_cases": 8,
+      "correct": 5,
+      "accuracy": 0.625
+    }
+  ],
+  "by_case_kind": [
+    {
+      "case_kind": "in_domain_transfer",
+      "n_cases": 6,
+      "correct": 6,
+      "accuracy": 1.0
+    },
+    {
+      "case_kind": "new_agent",
+      "n_cases": 15,
+      "correct": 13,
+      "accuracy": 0.8667
+    },
+    {
+      "case_kind": "paraphrased_message",
+      "n_cases": 12,
+      "correct": 6,
+      "accuracy": 0.5
+    }
+  ],
+  "coverage": {
+    "totals": {
+      "n_cases": 48,
+      "exact_input_seen_in_training": 4,
+      "agent_type_seen_in_training": 12,
+      "tool_name_seen_in_training": 11,
+      "error_type_seen_in_training": 25,
+      "error_message_seen_in_training": 12
+    },
+    "by_domain": {
+      "calculator": {
+        "n_cases": 12,
+        "agent_type_seen_in_training": 12,
+        "tool_name_seen_in_training": 9,
+        "error_type_seen_in_training": 7,
+        "error_message_seen_in_training": 6,
+        "exact_input_seen_in_training": 4
+      },
+      "python_execution": {
+        "n_cases": 12,
+        "agent_type_seen_in_training": 0,
+        "tool_name_seen_in_training": 0,
+        "error_type_seen_in_training": 6,
+        "error_message_seen_in_training": 2,
+        "exact_input_seen_in_training": 0
+      },
+      "web": {
+        "n_cases": 12,
+        "agent_type_seen_in_training": 0,
+        "tool_name_seen_in_training": 2,
+        "error_type_seen_in_training": 6,
+        "error_message_seen_in_training": 2,
+        "exact_input_seen_in_training": 0
+      },
+      "file_operations": {
+        "n_cases": 12,
+        "agent_type_seen_in_training": 0,
+        "tool_name_seen_in_training": 0,
+        "error_type_seen_in_training": 6,
+        "error_message_seen_in_training": 2,
+        "exact_input_seen_in_training": 0
+      }
+    }
+  },
+  "out_of_taxonomy": {
+    "n_cases": 15,
+    "predicted_label_distribution": {
+      "invalid_input": 1,
+      "missing_argument": 1,
+      "unknown_tool": 13
+    },
+    "cases": [
+      {
+        "task_id": "calc-009",
+        "domain": "calculator",
+        "error_type": "OverflowError",
+        "error": "math range error",
+        "predicted_label": "unknown_tool",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      },
+      {
+        "task_id": "calc-010",
+        "domain": "calculator",
+        "error_type": "RecursionError",
+        "error": "maximum recursion depth exceeded",
+        "predicted_label": "unknown_tool",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      },
+      {
+        "task_id": "calc-011",
+        "domain": "calculator",
+        "error_type": "MemoryError",
+        "error": "Unable to allocate 8.00 GiB for an array",
+        "predicted_label": "missing_argument",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      },
+      {
+        "task_id": "py-009",
+        "domain": "python_execution",
+        "error_type": "NameError",
+        "error": "name 'total' is not defined",
+        "predicted_label": "unknown_tool",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      },
+      {
+        "task_id": "py-010",
+        "domain": "python_execution",
+        "error_type": "TypeError",
+        "error": "unsupported operand type(s) for +: 'int' and 'str'",
+        "predicted_label": "invalid_input",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      },
+      {
+        "task_id": "py-011",
+        "domain": "python_execution",
+        "error_type": "IndexError",
+        "error": "list index out of range",
+        "predicted_label": "unknown_tool",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      },
+      {
+        "task_id": "py-012",
+        "domain": "python_execution",
+        "error_type": "TimeoutError",
+        "error": "Execution timed out after 30s",
+        "predicted_label": "unknown_tool",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      },
+      {
+        "task_id": "web-009",
+        "domain": "web",
+        "error_type": "HTTPError",
+        "error": "404 Client Error: Not Found for url: https://example.com/missing",
+        "predicted_label": "unknown_tool",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      },
+      {
+        "task_id": "web-010",
+        "domain": "web",
+        "error_type": "HTTPError",
+        "error": "500 Server Error: Internal Server Error",
+        "predicted_label": "unknown_tool",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      },
+      {
+        "task_id": "web-011",
+        "domain": "web",
+        "error_type": "ConnectionError",
+        "error": "connection reset by peer",
+        "predicted_label": "unknown_tool",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      },
+      {
+        "task_id": "web-012",
+        "domain": "web",
+        "error_type": "SSLError",
+        "error": "certificate verify failed",
+        "predicted_label": "unknown_tool",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      },
+      {
+        "task_id": "file-009",
+        "domain": "file_operations",
+        "error_type": "FileNotFoundError",
+        "error": "No such file or directory: 'notes.txt'",
+        "predicted_label": "unknown_tool",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      },
+      {
+        "task_id": "file-010",
+        "domain": "file_operations",
+        "error_type": "PermissionError",
+        "error": "Permission denied: '/etc/hosts'",
+        "predicted_label": "unknown_tool",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      },
+      {
+        "task_id": "file-011",
+        "domain": "file_operations",
+        "error_type": "OSError",
+        "error": "No space left on device",
+        "predicted_label": "unknown_tool",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      },
+      {
+        "task_id": "file-012",
+        "domain": "file_operations",
+        "error_type": "NotADirectoryError",
+        "error": "Not a directory: 'notes.txt'",
+        "predicted_label": "unknown_tool",
+        "out_of_taxonomy_reason": "The call was valid and the tool failed while running, so no label in the trained taxonomy applies. The call was valid and the tool failed while running. The underlying cause may be real, but it is not a defect in the tool call, so no label in the taxonomy applies."
+      }
+    ],
+    "note": "These traces have no correct label in the taxonomy. They are a coverage gap, not model errors, and are excluded from accuracy."
+  },
+  "error_analysis": [
+    {
+      "task_id": "calc-008",
+      "domain": "calculator",
+      "error_type": "TypeError",
+      "error": "unsupported operand type(s) for /: 'str' and 'int'",
+      "expected_label": "invalid_input",
+      "predicted_label": "unknown_tool",
+      "score_of_predicted_label": 0.6088,
+      "analysis": "Expected invalid_input, predicted unknown_tool. Nothing about this trace was seen in training: exact_input_seen, error_type_seen, error_message_seen The label is decided by where the call failed, so this is a model error, not an annotation dispute."
+    },
+    {
+      "task_id": "py-005",
+      "domain": "python_execution",
+      "error_type": "TypeError",
+      "error": "execute_code() missing 1 required positional argument: 'code'",
+      "expected_label": "missing_argument",
+      "predicted_label": "unknown_tool",
+      "score_of_predicted_label": 0.4612,
+      "analysis": "Expected missing_argument, predicted unknown_tool. Nothing about this trace was seen in training: exact_input_seen, agent_type_seen, tool_name_seen, error_type_seen, error_message_seen The label is decided by where the call failed, so this is a model error, not an annotation dispute."
+    },
+    {
+      "task_id": "py-008",
+      "domain": "python_execution",
+      "error_type": "ValueError",
+      "error": "Unsupported language: 'ruby'. Expected 'python'.",
+      "expected_label": "invalid_input",
+      "predicted_label": "unknown_tool",
+      "score_of_predicted_label": 0.6508,
+      "analysis": "Expected invalid_input, predicted unknown_tool. Nothing about this trace was seen in training: exact_input_seen, agent_type_seen, tool_name_seen, error_message_seen The label is decided by where the call failed, so this is a model error, not an annotation dispute."
+    },
+    {
+      "task_id": "web-001",
+      "domain": "web",
+      "error_type": "",
+      "error": "",
+      "expected_label": "none",
+      "predicted_label": "unknown_tool",
+      "score_of_predicted_label": 0.4816,
+      "analysis": "Expected none, predicted unknown_tool. Nothing about this trace was seen in training: exact_input_seen, agent_type_seen The label is decided by where the call failed, so this is a model error, not an annotation dispute."
+    },
+    {
+      "task_id": "web-006",
+      "domain": "web",
+      "error_type": "TypeError",
+      "error": "fetch_page() missing 1 required positional argument: 'url'",
+      "expected_label": "missing_argument",
+      "predicted_label": "unknown_tool",
+      "score_of_predicted_label": 0.4612,
+      "analysis": "Expected missing_argument, predicted unknown_tool. Nothing about this trace was seen in training: exact_input_seen, agent_type_seen, tool_name_seen, error_type_seen, error_message_seen The label is decided by where the call failed, so this is a model error, not an annotation dispute."
+    },
+    {
+      "task_id": "web-008",
+      "domain": "web",
+      "error_type": "ValueError",
+      "error": "Invalid URL scheme: 'ftp'",
+      "expected_label": "invalid_input",
+      "predicted_label": "unknown_tool",
+      "score_of_predicted_label": 0.6508,
+      "analysis": "Expected invalid_input, predicted unknown_tool. Nothing about this trace was seen in training: exact_input_seen, agent_type_seen, tool_name_seen, error_message_seen The label is decided by where the call failed, so this is a model error, not an annotation dispute."
+    },
+    {
+      "task_id": "file-006",
+      "domain": "file_operations",
+      "error_type": "TypeError",
+      "error": "write_file() missing 1 required positional argument: 'path'",
+      "expected_label": "missing_argument",
+      "predicted_label": "unknown_tool",
+      "score_of_predicted_label": 0.4612,
+      "analysis": "Expected missing_argument, predicted unknown_tool. Nothing about this trace was seen in training: exact_input_seen, agent_type_seen, tool_name_seen, error_type_seen, error_message_seen The label is decided by where the call failed, so this is a model error, not an annotation dispute."
+    },
+    {
+      "task_id": "file-008",
+      "domain": "file_operations",
+      "error_type": "ValueError",
+      "error": "Unsupported mode: 'banana'",
+      "expected_label": "invalid_input",
+      "predicted_label": "unknown_tool",
+      "score_of_predicted_label": 0.6508,
+      "analysis": "Expected invalid_input, predicted unknown_tool. Nothing about this trace was seen in training: exact_input_seen, agent_type_seen, tool_name_seen, error_message_seen The label is decided by where the call failed, so this is a model error, not an annotation dispute."
+    }
+  ],
+  "limitations": [
+    "The dataset is hand-authored simulation, not captured agent behaviour. No agent was run to produce it.",
+    "It has 48 cases, of which 33 are labelled. Accuracy on 33 cases has a wide confidence interval; the interval is reported.",
+    "Three of the four agent types (python, web, file) never appear in the training data. Anything the model gets right there is extrapolation, not learned cross-agent behaviour.",
+    "Fifteen cases are outside the trained taxonomy by design. They are coverage gaps, not model errors, and are excluded from accuracy.",
+    "The taxonomy has four classes and no class for tool execution failures, so a third of this dataset cannot be scored at all.",
+    "The dataset is never used for tuning. Improving these numbers by editing features would turn the measurement into a training set."
+  ]
+}

@@ -1,0 +1,7 @@
+task_id,error_type,failure_stage,detail_kind,exception_type_would_say,rules_say,declared_label,rules_agree_with_declared,exception_type_agrees_with_rules,note
+gen-001,ValueError,call_validation,tool_not_registered,invalid_input,unknown_tool,unknown_tool,True,False,
+gen-002,KeyError,call_validation,argument_absent,missing_argument,missing_argument,missing_argument,True,True,
+gen-003,ValueError,call_validation,argument_unusable,invalid_input,invalid_input,invalid_input,True,True,
+gen-004,,success,success,none,none,none,True,True,
+gen-005,NameError,tool_execution,execution_error,invalid_input,,,True,False,"A NameError is raised by the code the tool ran. The call's arguments were present and usable, so this is not invalid_input."
+gen-006,HTTPError,tool_execution,execution_error,unknown_tool,,,True,False,"An HTTP error is returned by a service the tool contacted. The tool exists and was called correctly, so this is not unknown_tool."

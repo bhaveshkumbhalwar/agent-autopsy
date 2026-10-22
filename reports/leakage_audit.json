@@ -1,0 +1,76 @@
+{
+  "n_rows": 200,
+  "label_distribution": {
+    "none": 50,
+    "unknown_tool": 50,
+    "invalid_input": 50,
+    "missing_argument": 50
+  },
+  "distinct_model_inputs": 16,
+  "duplicate_rows": 184,
+  "largest_group_size": 28,
+  "distinct_template_families": 4,
+  "template_families": {
+    "calculator|failure|KeyError|'b'": 50,
+    "calculator|failure|ValueError|Arguments a and b must be numbers": 50,
+    "calculator|failure|ValueError|Unknown tool: <tool>": 50,
+    "calculator|success||": 50
+  },
+  "ambiguous_model_inputs": 0,
+  "ambiguous_examples": [],
+  "identifier_shortcuts": {
+    "task_id": {
+      "column": "task_id",
+      "held_out_accuracy": 0.24,
+      "n_test": 50,
+      "ordinal_neighbour_probe": {
+        "column": "task_id",
+        "neighbour_accuracy": 0.9849246231155779,
+        "label_transitions": 3
+      }
+    },
+    "duration_ms": {
+      "column": "duration_ms",
+      "held_out_accuracy": 0.2,
+      "n_test": 50,
+      "ordinal_neighbour_probe": {
+        "column": "duration_ms",
+        "neighbour_accuracy": 0.24120603015075376,
+        "label_transitions": 151
+      }
+    }
+  },
+  "text_columns": [
+    "agent_type",
+    "tool_name",
+    "status",
+    "error_type",
+    "error"
+  ],
+  "identifier_columns": [
+    "task_id",
+    "duration_ms",
+    "started_at",
+    "finished_at"
+  ],
+  "split_overlap": {
+    "stratified_random": {
+      "train_rows": 150,
+      "test_rows": 50,
+      "distinct_train_signatures": 16,
+      "distinct_test_signatures": 14,
+      "signatures_in_both_splits": 14,
+      "test_rows_copied_from_train": 50,
+      "test_rows_copied_fraction": 1.0
+    },
+    "stratified_group_kfold": {
+      "train_rows": 95,
+      "test_rows": 105,
+      "distinct_train_signatures": 8,
+      "distinct_test_signatures": 8,
+      "signatures_in_both_splits": 0,
+      "test_rows_copied_from_train": 0,
+      "test_rows_copied_fraction": 0.0
+    }
+  }
+}

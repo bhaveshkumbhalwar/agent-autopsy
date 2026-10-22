@@ -7,17 +7,17 @@ reporting logic that decides which cases count as model errors.
 import pandas as pd
 import pytest
 
-from src.diagnosis.taxonomy import (
-    LABEL_DEFINITIONS,
-    SUPPORTED_LABELS,
-    describe,
-    is_supported,
-)
 from src.evaluation import analyze_errors
 from src.evaluation.test_generalization import (
     TEST_CASES,
     build_result_row,
     summarize,
+)
+from src.tracing.labels import (
+    LABEL_DEFINITIONS,
+    SUPPORTED_LABELS,
+    describe,
+    is_supported,
 )
 
 
