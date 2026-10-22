@@ -52,7 +52,7 @@ Evaluation and Error Analysis
 
 The current prototype uses a deterministic tool-execution agent and a supervised machine learning classifier. It is a foundation for researching failure diagnosis across different agent architectures.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Language:** Python
 - **Data Processing:** Pandas, NumPy
