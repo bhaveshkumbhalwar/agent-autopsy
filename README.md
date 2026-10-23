@@ -8,7 +8,7 @@ Instead of simply reporting that an agent failed, the system attempts to classif
 
 > **Project status:** Research prototype in active development.
 
-## Problem Statement
+## Problem Statement.
 
 AI agents can fail for several reasons, including unsupported tools, missing arguments, invalid inputs, and execution errors. Understanding these failures is essential for building more reliable AI systems.
 
