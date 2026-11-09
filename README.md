@@ -14,7 +14,7 @@ AI agents can fail for several reasons, including unsupported tools, missing arg
 
 Agent Autopsy explores a structured approach to failure diagnosis using execution traces and machine learning.
 
-## ✨ Key Features
+##  Key Features
 
 - **Standardized execution traces** — Records agent task details, tool calls, execution status, errors, timestamps, and duration.
 - **Failure classification** — Uses TF-IDF and Logistic Regression to classify failures.
