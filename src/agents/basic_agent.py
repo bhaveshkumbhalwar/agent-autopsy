@@ -6,7 +6,7 @@ carries a taxonomy ``failure_label`` so downstream dataset builders do not
 have to re-derive the reason for a failure from free text.
 """
 
-import operator
+import operator 
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Mapping, Optional
