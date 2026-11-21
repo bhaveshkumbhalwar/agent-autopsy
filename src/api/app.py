@@ -52,7 +52,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from src.diagnosis.modeling import MODEL_FILES
 from src.diagnosis.predict_failure import (
     DEFAULT_MODEL,
-    load_model,
+    load_model, 
     predict_with_pipeline,
 )
 
